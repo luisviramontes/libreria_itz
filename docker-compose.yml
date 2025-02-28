@@ -1,0 +1,23 @@
+version: '3' # Especificamos la versión del esquema de Docker Compoe que se utiliza
+services: #Definimos los servisios que se ejecutan
+  libreria-itz: #API de libreria ITZ
+    build:
+      context: . #Inicamos la ruta para construir el setvicio
+      dockerfile: Dockerfile #Especificamos el nombre del archivo del constructor
+    ports:
+      - "3001:3000" #Hacemos el mapeo de puerts
+    image: libreria-itz-image:tag #Definimos el nombre de la imagen creada
+    depends_on:
+      - mongo #Nombre del servicio del cual depende
+    environment:    
+      - MONGO_URL=mongodb://mongo:27017/libreria_itz_db 
+    command: node index #Nos aseguramos de iniciar la aplicación
+  mongo:  #Nombre del servicio
+    image: mongo:6.0 #Va a utilizar la imagen oficial de MongoDB 6.0
+    container_name: mongo #Asignamos el nombre del contedor
+    ports:
+      - "27017:27017" #Mapeo en el puerto 27017 del contebnedor al 27017 del host
+    volumes:
+      - mongo-data:/data/db #Montar un volumen persistente en la ruta /data/db dentro del contenedor, que es donde MongoDB guarda los datos
+volumes:
+  mongo-data: #Volumne mongo-data lo vamos a utilizar para guardar los datos de MongoDB fuera del contenedor

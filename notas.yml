@@ -1,0 +1,55 @@
+#Registrarnos en AWS
+#Creamos una intancia EC2
+
+#Descargamos GitBash
+
+#Paso 1 Conectarnos a la Instancia EC2
+ssh -i nuestra-clave.pem ubuntu@tu-direccion-ip
+
+#Paso 2 Actualizar los Paquetes del SO
+sudo apt update && sudo apt upgrade -y
+
+#Paso 3 Instalar las Dependencias Necesarias
+sudo apt install -y ca-certificates curl gnupg
+
+#Paso 4 Agregar la Clave GPG de Docker
+# Añade la clave oficial de Docker para verificar la autenticidad del paquete
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg  | sudo tee /etc/apt/keyrings/docker.asc > /dev/null
+
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+#Paso 5 Agregamos el Repositorio De Docker a nuestro sistema
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+#Paso 6 Instalamos docker
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+#Paso 7 Verificar que Docker esta instalado
+sudo systemctl status docker
+
+#Paso 8 si les aparece el Servicio de Docker cómo Stop
+systemclt start docker
+
+#Paso 9 si queremos que Docker se inice automaticamente al prender el servidor
+sudo systemctl enable docker
+
+#Paso 10 Aagramos a nuestro usuario al grupo de Docker
+sudo usermod -aG docker $USER
+newgrp docker
+docker ps
+
+#Paso 11 Construir nuestra imagen de Docker
+docker build -t luisviramontes8/libreria-itz-image:latest .
+
+#Paso 12 Verificamos que la imagen se creo
+docker images
+
+#Paso 13 Login Docker
+docker login
+
+#Paso 14 Publicamos nuestra imagen en Docker Hub
+docker push luisviramontes8/libreria-itz-image:latest 
