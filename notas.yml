@@ -53,3 +53,17 @@ docker login
 
 #Paso 14 Publicamos nuestra imagen en Docker Hub
 docker push luisviramontes8/libreria-itz-image:latest 
+
+#Clonar nuestro repositorio
+git init
+creamos un archivo .gitignore y agregamos node_modules 
+git add .
+git commit -m "Mi Primer Commit"
+
+Creamos un repositorio en GitHub
+git remote add origin https://github.com/luisviramontes/libreria_itz.git
+git branch -M main
+git push -u origin main
+
+#En el servidor clonamos el repo
+git clone https://github.com/luisviramontes/libreria_itz.git
